@@ -3,10 +3,12 @@ package com.omarbashawith.mufeed_app.di
 import android.app.Application
 import androidx.room.Room
 import androidx.room.RoomDatabase
+import com.omarbashawith.mufeed_app.features.list.data.PostRepoImpl
 import com.omarbashawith.mufeed_app.features.list.data.local.PostsDao
 import com.omarbashawith.mufeed_app.features.list.data.local.PostsDatabase
 import com.omarbashawith.mufeed_app.features.list.data.local.RemoteKeysDao
 import com.omarbashawith.mufeed_app.features.list.data.remote.PostApi
+import com.omarbashawith.mufeed_app.features.list.domain.PostRepo
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -26,7 +28,7 @@ object AppModule {
     fun provideRetrofit(): Retrofit {
         return Retrofit.Builder()
             .addConverterFactory(GsonConverterFactory.create())
-            .baseUrl("http://0.0.0.0:8080/")
+            .baseUrl("http://192.168.0.125:8080/")
             .build()
     }
 
@@ -44,5 +46,14 @@ object AppModule {
             PostsDatabase::class.java,
             "posts.db"
         ).build()
+    }
+
+    @Provides
+    @Singleton
+    fun providePostRepo(
+        api: PostApi,
+        db: PostsDatabase
+    ): PostRepo{
+        return PostRepoImpl(api, db)
     }
 }
