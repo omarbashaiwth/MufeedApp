@@ -55,8 +55,8 @@ fun PostItem(
                     .padding(horizontal = 8.dp, vertical = 4.dp),
                 text = post.title,
                 style = MaterialTheme.typography.h2,
-                color = MaterialTheme.colors.secondary,
-                textAlign = TextAlign.End,
+                color = MaterialTheme.colors.primaryVariant,
+                textAlign = TextAlign.Start,
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis
             )
@@ -67,7 +67,7 @@ fun PostItem(
                 text = post.shortDescription,
                 style = MaterialTheme.typography.body1,
                 color = MaterialTheme.colors.onSurface,
-                textAlign = TextAlign.End,
+                textAlign = TextAlign.Start,
                 maxLines = 2,
                 overflow = TextOverflow.Ellipsis
             )
@@ -79,23 +79,6 @@ fun PostItem(
                 horizontalArrangement = Arrangement.SpaceBetween,
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                Row(
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    Icon(
-                        modifier = Modifier.size(24.dp),
-                        imageVector = Icons.Outlined.Schedule,
-                        contentDescription = null,
-                        tint = MaterialTheme.colors.onSurface
-                    )
-                    Spacer(modifier = Modifier.width(8.dp))
-                    Text(
-                        text = post.date.toString(),
-                        style = MaterialTheme.typography.h3,
-                        color = MaterialTheme.colors.onSurface
-                    )
-                }
-
                 Row {
                     post.tags.forEach { tag ->
                         val backgroundColor = when (tag) {
@@ -111,6 +94,23 @@ fun PostItem(
                             tag = tag
                         )
                     }
+                }
+
+                Row(
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Text(
+                        text = post.date.toString(),
+                        style = MaterialTheme.typography.h3,
+                        color = MaterialTheme.colors.onSurface
+                    )
+                    Spacer(modifier = Modifier.width(8.dp))
+                    Icon(
+                        modifier = Modifier.size(24.dp),
+                        imageVector = Icons.Outlined.Schedule,
+                        contentDescription = null,
+                        tint = MaterialTheme.colors.onSurface
+                    )
                 }
             }
         }

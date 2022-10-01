@@ -1,5 +1,6 @@
 package com.omarbashawith.mufeed_app.core.presentation.ui.theme
 
+import android.annotation.SuppressLint
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.darkColors
@@ -7,10 +8,13 @@ import androidx.compose.material.lightColors
 import androidx.compose.runtime.Composable
 
 
+@SuppressLint("ConflictingOnColor")
 private val LightColorPalette = lightColors(
     primary = OldGold,
+    secondary = OldGold,
+    onSecondary = PhilippineGray,
     onPrimary = White,
-    secondary = BistreBrown,
+    primaryVariant = BistreBrown,
     background = BrightGray,
     surface = White,
     onSurface = EerieBlack
@@ -18,8 +22,10 @@ private val LightColorPalette = lightColors(
 
 private val DarkColorPalette = darkColors(
     primary = EerieBlack,
+    secondary = BistreBrown,
+    onSecondary = Gainsboro,
     onPrimary = Gainsboro,
-    secondary = Gainsboro,
+    primaryVariant = Gainsboro,
     background = ChineseBlack,
     surface = EerieBlack,
     onSurface = Gainsboro
