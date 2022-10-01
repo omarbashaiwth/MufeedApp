@@ -1,4 +1,4 @@
-package com.omarbashawith.mufeed_app.core.ui.theme
+package com.omarbashawith.mufeed_app.core.presentation.ui.theme
 
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material.MaterialTheme
@@ -6,20 +6,26 @@ import androidx.compose.material.darkColors
 import androidx.compose.material.lightColors
 import androidx.compose.runtime.Composable
 
-private val DarkColorPalette = darkColors(
-    primary = EerieBlack,
-    secondary = BistreBrown,
-    background = ChineseBlack,
-    onPrimary = Gainsboro
-)
 
 private val LightColorPalette = lightColors(
-    primary = White,
-    secondary = OldGold,
+    primary = OldGold,
+    onPrimary = White,
+    secondary = BistreBrown,
     background = BrightGray,
-    onPrimary = GraniteGray,
-    onSecondary = White,
-    onSurface = PhilippineGray
+    surface = White,
+    onSurface = EerieBlack
+)
+
+private val DarkColorPalette = darkColors(
+    primary = EerieBlack,
+    onPrimary = Gainsboro,
+    secondary = Gainsboro,
+    background = ChineseBlack,
+    surface = EerieBlack,
+    onSurface = Gainsboro
+)
+
+
 
     /* Other default colors to override
     background = Color.White,
@@ -29,7 +35,7 @@ private val LightColorPalette = lightColors(
     onBackground = Color.Black,
     onSurface = Color.Black,
     */
-)
+
 
 @Composable
 fun MufeedAppTheme(darkTheme: Boolean = isSystemInDarkTheme(), content: @Composable () -> Unit) {
@@ -41,8 +47,8 @@ fun MufeedAppTheme(darkTheme: Boolean = isSystemInDarkTheme(), content: @Composa
 
     MaterialTheme(
         colors = colors,
-        typography = Typography,
-        shapes = Shapes,
+        typography = typography,
+        shapes = shapes,
         content = content
     )
 }
