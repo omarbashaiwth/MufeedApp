@@ -13,7 +13,7 @@ data class Post(
     val links: List<String>,
     val body: String,
     val imageUrl:String,
-    val date: Long,
+    val date: String,
     val tags: List<String>,
     val isFavorite: Boolean = false
 )

@@ -4,32 +4,36 @@ import android.content.res.Configuration
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
-import androidx.compose.material.Card
-import androidx.compose.material.Icon
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Text
+import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Favorite
+import androidx.compose.material.icons.outlined.Favorite
+import androidx.compose.material.icons.outlined.FavoriteBorder
 import androidx.compose.material.icons.outlined.Schedule
-import androidx.compose.runtime.Composable
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import coil.annotation.ExperimentalCoilApi
 import coil.compose.rememberImagePainter
+import com.omarbashawith.mufeed_app.R
 import com.omarbashawith.mufeed_app.core.data.model.Post
 import com.omarbashawith.mufeed_app.core.presentation.ui.theme.*
+import com.omarbashawith.mufeed_app.core.util.timeAgo
 
 @OptIn(ExperimentalCoilApi::class)
 @Composable
 fun PostItem(
     modifier: Modifier = Modifier,
-    post: Post
+    post: Post,
 ) {
 
     Card(
@@ -42,24 +46,40 @@ fun PostItem(
             horizontalAlignment = Alignment.End,
         ) {
             Image(
-                painter = rememberImagePainter(data = post.imageUrl),
+                painter = rememberImagePainter(data = post.imageUrl){
+                     error(R.drawable.ic_placeholder)
+                },
                 contentDescription = null,
                 modifier = Modifier
                     .fillMaxWidth()
                     .size(123.dp),
                 contentScale = ContentScale.Crop
             )
-            Text(
+            Row(
                 modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = 8.dp, vertical = 4.dp),
-                text = post.title,
-                style = MaterialTheme.typography.h2,
-                color = MaterialTheme.colors.primaryVariant,
-                textAlign = TextAlign.Start,
-                maxLines = 1,
-                overflow = TextOverflow.Ellipsis
-            )
+                    .fillMaxSize()
+                    .padding(start = 8.dp, top = 2.dp, bottom = 2.dp),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Text(
+                    text = post.title,
+                    style = MaterialTheme.typography.h2,
+                    color = MaterialTheme.colors.primaryVariant,
+                    textAlign = TextAlign.Start,
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis
+                )
+                IconButton(onClick = {}) {
+                    Icon(
+                        imageVector = if (post.isFavorite) Icons.Filled.Favorite else Icons.Outlined.FavoriteBorder,
+                        contentDescription = null,
+                        modifier = Modifier.size(24.dp),
+                        tint = if (post.isFavorite) Color.Red else MaterialTheme.colors.onSurface
+                    )
+                }
+            }
+
             Text(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -82,11 +102,11 @@ fun PostItem(
                 Row {
                     post.tags.forEach { tag ->
                         val backgroundColor = when (tag) {
-                            "موقع ويب" -> CoralRed
-                            "أندرويد" -> Midnight
-                            "أيفون" -> PomonaGreen
-                            "برنامج كمبيوتر" -> BluePigment
-                            "استضافة كروم" -> BlueSapphire
+                            stringResource(R.string.website) -> CoralRed
+                            stringResource(R.string.android) -> Midnight
+                            stringResource(R.string.ios) -> PomonaGreen
+                            stringResource(R.string.pc_programs) -> BluePigment
+                            stringResource(R.string.chrome_extention) -> BlueSapphire
                             else -> OldGold
                         }
                         TagItem(
@@ -100,13 +120,13 @@ fun PostItem(
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     Text(
-                        text = post.date.toString(),
+                        text = post.date.timeAgo(),
                         style = MaterialTheme.typography.h3,
                         color = MaterialTheme.colors.onSurface
                     )
                     Spacer(modifier = Modifier.width(8.dp))
                     Icon(
-                        modifier = Modifier.size(24.dp),
+                        modifier = Modifier.size(16.dp),
                         imageVector = Icons.Outlined.Schedule,
                         contentDescription = null,
                         tint = MaterialTheme.colors.onSurface
@@ -133,24 +153,4 @@ private fun TagItem(
         style = MaterialTheme.typography.h3,
         color = White
     )
-}
-
-@Preview
-@Preview(uiMode = Configuration.UI_MODE_NIGHT_YES)
-@Composable
-fun PostItemPreview() {
-    MufeedAppTheme {
-        PostItem(
-            post = Post(
-                id = "123",
-                title = "Pixabay",
-                shortDescription = "حمل مجاناً وبشكل رسمي أجود الصور ومقاطع الفيديو التي تحتاجها كمصمم أو منتج أو صانع محتوى.",
-                tags = listOf("موقع ويب", "أندرويد", "أيفون"),
-                body = "",
-                imageUrl = "",
-                links = listOf(),
-                date = 12314964165L
-            )
-        )
-    }
 }

@@ -13,7 +13,7 @@ object FakeContents {
                 links = listOf("fake link 1", "fake link 2"),
                 body = "fake body $it",
                 imageUrl = "fake image url $it",
-                date = 0L,
+                date = "46546",
                 tags = listOf("fake tag 1", "fake tag 2")
             )
         }

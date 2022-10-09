@@ -28,18 +28,11 @@ class MainActivity : ComponentActivity() {
                 val systemUiController = rememberSystemUiController()
                 systemUiController.setStatusBarColor(MaterialTheme.colors.primary)
                 val navController = rememberNavController()
-                val navBackStackEntry by navController.currentBackStackEntryAsState()
 
                 Scaffold(
                     backgroundColor = MaterialTheme.colors.background,
                     bottomBar = {
                         BottomBarSection(
-                            destinations = listOf(
-                                BottomNavDestinations.HomeScreen,
-                                BottomNavDestinations.CategoryScreen,
-                                BottomNavDestinations.FavoriteScreen
-                            ),
-                            backStackEntry = navBackStackEntry,
                             navController = navController
                         )
                     }

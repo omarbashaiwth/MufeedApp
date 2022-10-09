@@ -1,3 +1,9 @@
 <resources>
     <string name="app_name">Mufeed App</string>
+    <string name="all_posts">كل المقالات</string>
+    <string name="website">موقع ويب</string>
+    <string name="android">أندرويد</string>
+    <string name="ios">أيفون</string>
+    <string name="pc_programs">برنامج كمبيوتر</string>
+    <string name="chrome_extention">استضافة كروم</string>
 </resources>

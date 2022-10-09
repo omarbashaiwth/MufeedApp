@@ -6,27 +6,27 @@ import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.ui.graphics.vector.ImageVector
 import com.omarbashawith.mufeed_app.features.destinations.CategoriesScreenDestination
-import com.omarbashawith.mufeed_app.features.destinations.DirectionDestination
 import com.omarbashawith.mufeed_app.features.destinations.FavoritesScreenDestination
 import com.omarbashawith.mufeed_app.features.destinations.ListScreenDestination
+import com.ramcosta.composedestinations.spec.DirectionDestinationSpec
 
-sealed class BottomNavDestinations(
-    val destination: DirectionDestination,
+enum class BottomNavDestinations(
+    val direction: DirectionDestinationSpec,
     val title: String,
     val icon: ImageVector
 ){
-    object HomeScreen: BottomNavDestinations(
-        destination = ListScreenDestination,
+    HomeScreen(
+        direction = ListScreenDestination,
         title = "الرئيسية",
         icon = Icons.Filled.Home
-    )
-    object CategoryScreen: BottomNavDestinations(
-        destination = CategoriesScreenDestination,
+    ),
+    CategoryScreen(
+        direction = CategoriesScreenDestination,
         title = "التصنيفات",
         icon = Icons.Filled.Category
-    )
-    object FavoriteScreen: BottomNavDestinations(
-        destination = FavoritesScreenDestination,
+    ),
+    FavoriteScreen(
+        direction = FavoritesScreenDestination,
         title = "المفضلة",
         icon = Icons.Filled.Favorite
     )

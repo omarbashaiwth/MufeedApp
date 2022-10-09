@@ -9,6 +9,7 @@ import androidx.compose.material.BottomNavigationItem
 import androidx.compose.material.Icon
 import androidx.compose.material.MaterialTheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -16,17 +17,24 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavController
+import androidx.navigation.NavGraph.Companion.findStartDestination
+import androidx.navigation.NavOptions
+import androidx.navigation.NavOptionsBuilder
+import com.omarbashawith.mufeed_app.R
 import com.omarbashawith.mufeed_app.core.presentation.ui.theme.White
 import com.omarbashawith.mufeed_app.core.util.BottomNavDestinations
+import com.omarbashawith.mufeed_app.features.NavGraphs
+import com.omarbashawith.mufeed_app.features.appCurrentDestinationAsState
 import com.omarbashawith.mufeed_app.features.appDestination
+import com.omarbashawith.mufeed_app.features.startAppDestination
 import com.ramcosta.composedestinations.navigation.navigate
 
 @Composable
 fun BottomBarSection(
-    destinations: List<BottomNavDestinations>,
-    backStackEntry: NavBackStackEntry?,
     navController: NavController
 ) {
+    val currentDestination by navController.appCurrentDestinationAsState()
+
     BottomAppBar(
         modifier = Modifier
             .clip(
@@ -37,14 +45,16 @@ fun BottomBarSection(
             ),
         backgroundColor = MaterialTheme.colors.surface
     ) {
-        val appDestinations = backStackEntry?.appDestination()
-        destinations.forEach {
-            val isSelected = appDestinations == it.destination
+
+        BottomNavDestinations.values().forEach { destination ->
+            val isSelected = currentDestination == destination.direction
             BottomNavigationItem(
                 selected = isSelected,
                 onClick = {
-                    navController.popBackStack()
-                    navController.navigate(it.destination){
+                    navController.navigate(destination.direction) {
+                        popUpTo(navController.graph.findStartDestination().id) {
+                            saveState = true
+                        }
                         launchSingleTop = true
                         restoreState = true
                     }
@@ -58,9 +68,9 @@ fun BottomBarSection(
                             .padding(5.dp)
                     ) {
                         Icon(
-                            imageVector = it.icon,
-                            contentDescription = it.title,
-                            tint = if (isSelected)  White else MaterialTheme.colors.onSecondary
+                            imageVector = destination.icon,
+                            contentDescription = destination.title,
+                            tint = if (isSelected) White else MaterialTheme.colors.onSecondary
                         )
                     }
                 }
