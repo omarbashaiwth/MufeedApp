@@ -33,6 +33,7 @@ import com.omarbashawith.mufeed_app.core.util.timeAgo
 fun PostItem(
     modifier: Modifier = Modifier,
     post: Post,
+    showTags: Boolean
 ) {
 
     Card(
@@ -98,20 +99,22 @@ fun PostItem(
                 horizontalArrangement = Arrangement.SpaceBetween,
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                Row {
-                    post.tags.forEach { tag ->
-                        val backgroundColor = when (tag) {
-                            stringResource(R.string.website) -> CoralRed
-                            stringResource(R.string.android) -> Midnight
-                            stringResource(R.string.ios) -> PomonaGreen
-                            stringResource(R.string.pc_programs) -> BluePigment
-                            stringResource(R.string.chrome_extention) -> BlueSapphire
-                            else -> OldGold
+                if (showTags) {
+                    Row {
+                        post.tags.forEach { tag ->
+                            val backgroundColor = when (tag) {
+                                stringResource(R.string.website) -> CoralRed
+                                stringResource(R.string.android) -> Midnight
+                                stringResource(R.string.iphone) -> PomonaGreen
+                                stringResource(R.string.pc_programs) -> BluePigment
+                                stringResource(R.string.chrome_extention) -> BlueSapphire
+                                else -> OldGold
+                            }
+                            TagItem(
+                                backgroundColor = backgroundColor,
+                                tag = tag
+                            )
                         }
-                        TagItem(
-                            backgroundColor = backgroundColor,
-                            tag = tag
-                        )
                     }
                 }
 

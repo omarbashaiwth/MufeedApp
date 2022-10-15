@@ -3,6 +3,8 @@ package com.omarbashawith.mufeed_app.di
 import android.app.Application
 import androidx.room.Room
 import androidx.room.RoomDatabase
+import com.omarbashawith.mufeed_app.features.categories.data.PostCategoryRepoImpl
+import com.omarbashawith.mufeed_app.features.categories.domain.PostCategoryRepo
 import com.omarbashawith.mufeed_app.features.list.data.PostRepoImpl
 import com.omarbashawith.mufeed_app.features.list.data.local.PostsDao
 import com.omarbashawith.mufeed_app.features.list.data.local.PostsDatabase
@@ -55,5 +57,13 @@ object AppModule {
         db: PostsDatabase
     ): PostRepo{
         return PostRepoImpl(api, db)
+    }
+
+    @Provides
+    @Singleton
+    fun providePostCategoryRepo(
+        db: PostsDatabase
+    ): PostCategoryRepo{
+        return PostCategoryRepoImpl(db)
     }
 }

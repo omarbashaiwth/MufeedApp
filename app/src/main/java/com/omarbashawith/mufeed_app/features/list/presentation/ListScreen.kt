@@ -115,6 +115,7 @@ fun ListScreen(
                         PostItem(
                             modifier = Modifier.padding(bottom = 16.dp),
                             post = it,
+                            showTags = true
                         )
                     }
                 }

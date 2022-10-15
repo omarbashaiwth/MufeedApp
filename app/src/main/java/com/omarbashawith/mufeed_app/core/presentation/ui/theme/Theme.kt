@@ -17,7 +17,8 @@ private val LightColorPalette = lightColors(
     primaryVariant = BistreBrown,
     background = BrightGray,
     surface = White,
-    onSurface = EerieBlack
+    onSurface = EerieBlack,
+    secondaryVariant = OldGold
 )
 
 private val DarkColorPalette = darkColors(
@@ -28,7 +29,8 @@ private val DarkColorPalette = darkColors(
     primaryVariant = Gainsboro,
     background = ChineseBlack,
     surface = EerieBlack,
-    onSurface = Gainsboro
+    onSurface = Gainsboro,
+    secondaryVariant = BistreBrown
 )
 
 

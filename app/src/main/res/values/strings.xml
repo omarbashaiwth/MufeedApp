@@ -3,7 +3,7 @@
     <string name="all_posts">كل المقالات</string>
     <string name="website">موقع ويب</string>
     <string name="android">أندرويد</string>
-    <string name="ios">أيفون</string>
+    <string name="iphone">أيفون</string>
     <string name="pc_programs">برنامج كمبيوتر</string>
     <string name="chrome_extention">استضافة كروم</string>
     <string name="Io_exception_msg">حصل خطأ في الاتصال..الرجاء التأكد من اتصالك بالانترنت</string>
@@ -11,4 +11,10 @@
     <string name="general_exception_msg">حصل خطأ ما .. أعد المحاولة</string>
     <string name="retry">أعد المحاولة</string>
     <string name="search_here_hint">ابحث هنا..</string>
+    <string name="categories">التصنيفات</string>
+    <string name="android_label">تطبيقات أندرويد</string>
+    <string name="iphone_label">تطبيقات أيفون</string>
+    <string name="website_label">مواقع ويب</string>
+    <string name="chrome_label">إضافات كروم</string>
+    <string name="pc_label">برامج كمبيوتر</string>
 </resources>

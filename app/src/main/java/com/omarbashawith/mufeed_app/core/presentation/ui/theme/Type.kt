@@ -47,7 +47,7 @@ val typography = Typography(
     // categories button
     h4 = TextStyle(
         fontFamily = tajawalFont,
-        fontSize = 11.sp
+        fontSize = 10.sp
     )
 
 )
