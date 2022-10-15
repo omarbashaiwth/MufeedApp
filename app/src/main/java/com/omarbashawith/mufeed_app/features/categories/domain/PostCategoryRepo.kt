@@ -5,6 +5,5 @@ import com.omarbashawith.mufeed_app.core.data.model.Post
 import kotlinx.coroutines.flow.Flow
 
 interface PostCategoryRepo {
-
-    fun getPostsByTag(): Flow<PagingData<Post>>
+    val getPosts: Flow<PagingData<Post>>
 }

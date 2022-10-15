@@ -11,14 +11,12 @@ import javax.inject.Inject
 
 class PostCategoryRepoImpl @Inject constructor(
     val db: PostsDatabase
-): PostCategoryRepo  {
+) : PostCategoryRepo {
 
-    override fun getPostsByTag(): Flow<PagingData<Post>> {
-        return Pager(
-            config = PagingConfig(pageSize = 15),
-            pagingSourceFactory = {
-                db.postsDao().getPostsByTags()
-            }
-        ).flow
-    }
+    override val getPosts: Flow<PagingData<Post>> = Pager(
+        config = PagingConfig(pageSize = 15),
+        pagingSourceFactory = {
+            db.postsDao().getAllPosts()
+        }
+    ).flow
 }

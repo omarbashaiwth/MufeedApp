@@ -9,6 +9,7 @@ import com.omarbashawith.mufeed_app.features.list.domain.PostRepo
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
+@ExperimentalPagingApi
 class PostRepoImpl @Inject constructor(
     private val api: PostApi,
     private val db: PostsDatabase,
@@ -19,6 +20,6 @@ class PostRepoImpl @Inject constructor(
             config = PagingConfig(15),
             remoteMediator = PostsRemoteMediator(api,db)
         ){
-            db.postsDao().getAllPosts(query)
+            db.postsDao().getPostsBySearch(query)
         }.flow
 }

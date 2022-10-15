@@ -19,7 +19,7 @@ class PostCategoryViewModel @Inject constructor(
         private set
 
 
-    val postsByTag = postCategoryRepo.getPostsByTag()
+    val postsByTag = postCategoryRepo.getPosts.cachedIn(viewModelScope)
 
 
     fun onTagChange(newValue: String) {
