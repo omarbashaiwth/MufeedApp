@@ -6,4 +6,9 @@
     <string name="ios">أيفون</string>
     <string name="pc_programs">برنامج كمبيوتر</string>
     <string name="chrome_extention">استضافة كروم</string>
+    <string name="Io_exception_msg">حصل خطأ في الاتصال..الرجاء التأكد من اتصالك بالانترنت</string>
+    <string name="http_exception_msg">حصل خطأ في الاتصال بالسيرفر.. الرجاء المحاولة لاحقاً</string>
+    <string name="general_exception_msg">حصل خطأ ما .. أعد المحاولة</string>
+    <string name="retry">أعد المحاولة</string>
+    <string name="search_here_hint">ابحث هنا..</string>
 </resources>

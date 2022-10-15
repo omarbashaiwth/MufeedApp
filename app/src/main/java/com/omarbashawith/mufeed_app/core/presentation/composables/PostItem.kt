@@ -6,10 +6,9 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Favorite
-import androidx.compose.material.icons.outlined.Favorite
-import androidx.compose.material.icons.outlined.FavoriteBorder
+import androidx.compose.material.icons.filled.Star
 import androidx.compose.material.icons.outlined.Schedule
+import androidx.compose.material.icons.outlined.StarBorder
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -72,10 +71,10 @@ fun PostItem(
                 )
                 IconButton(onClick = {}) {
                     Icon(
-                        imageVector = if (post.isFavorite) Icons.Filled.Favorite else Icons.Outlined.FavoriteBorder,
+                        imageVector = if (post.isFavorite) Icons.Filled.Star else Icons.Outlined.StarBorder,
                         contentDescription = null,
                         modifier = Modifier.size(24.dp),
-                        tint = if (post.isFavorite) Color.Red else MaterialTheme.colors.onSurface
+                        tint = if (post.isFavorite) Color.Yellow else MaterialTheme.colors.onSurface
                     )
                 }
             }

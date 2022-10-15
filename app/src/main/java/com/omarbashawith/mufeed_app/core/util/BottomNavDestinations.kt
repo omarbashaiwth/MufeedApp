@@ -4,6 +4,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Category
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.Home
+import androidx.compose.material.icons.filled.Star
 import androidx.compose.ui.graphics.vector.ImageVector
 import com.omarbashawith.mufeed_app.features.destinations.CategoriesScreenDestination
 import com.omarbashawith.mufeed_app.features.destinations.FavoritesScreenDestination
@@ -28,6 +29,6 @@ enum class BottomNavDestinations(
     FavoriteScreen(
         direction = FavoritesScreenDestination,
         title = "المفضلة",
-        icon = Icons.Filled.Favorite
+        icon = Icons.Filled.Star
     )
 }

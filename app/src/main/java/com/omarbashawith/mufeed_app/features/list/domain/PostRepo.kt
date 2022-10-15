@@ -6,5 +6,5 @@ import kotlinx.coroutines.flow.Flow
 
 interface PostRepo {
 
-    val allPosts: Flow<PagingData<Post>>
+    fun allPosts(query: String): Flow<PagingData<Post>>
 }

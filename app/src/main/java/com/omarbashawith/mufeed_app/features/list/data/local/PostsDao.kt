@@ -10,8 +10,8 @@ import com.omarbashawith.mufeed_app.core.data.model.Post
 @Dao
 interface PostsDao {
 
-    @Query("SELECT * FROM posts_table")
-    fun getAllPosts(): PagingSource<Int, Post>
+    @Query("SELECT * FROM posts_table WHERE title LIKE '%' || :query || '%'")
+    fun getAllPosts(query: String): PagingSource<Int, Post>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertPosts(posts: List<Post>)

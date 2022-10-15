@@ -11,15 +11,14 @@ import javax.inject.Inject
 
 class PostRepoImpl @Inject constructor(
     private val api: PostApi,
-    private val db: PostsDatabase
+    private val db: PostsDatabase,
 ): PostRepo {
 
     @OptIn(ExperimentalPagingApi::class)
-    override val allPosts: Flow<PagingData<Post>>
-        get() = Pager(
+    override fun allPosts(query: String): Flow<PagingData<Post>> = Pager(
             config = PagingConfig(15),
             remoteMediator = PostsRemoteMediator(api,db)
         ){
-            db.postsDao().getAllPosts()
+            db.postsDao().getAllPosts(query)
         }.flow
 }
