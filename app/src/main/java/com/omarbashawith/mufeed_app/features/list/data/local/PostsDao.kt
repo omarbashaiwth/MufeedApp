@@ -11,7 +11,7 @@ import com.omarbashawith.mufeed_app.core.data.model.Post
 interface PostsDao {
 
     @Query("SELECT * FROM posts_table WHERE title LIKE '%' || :query || '%'")
-    fun getPostsBySearch(query: String): PagingSource<Int, Post>
+    fun getPostsByQuery(query: String): PagingSource<Int, Post>
 
     @Query("SELECT * FROM posts_table")
     fun getAllPosts(): PagingSource<Int, Post>

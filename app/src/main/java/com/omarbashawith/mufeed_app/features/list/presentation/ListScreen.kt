@@ -7,12 +7,10 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Search
-import androidx.compose.material.icons.outlined.Search
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
-import androidx.compose.ui.graphics.vector.PathNode
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -39,8 +37,9 @@ fun ListScreen(
     scaffoldState: ScaffoldState = rememberScaffoldState()
 ) {
     val context = LocalContext.current
-    val allPosts = listScreenViewModel.posts.collectAsLazyPagingItems()
     val searchBarState by listScreenViewModel.searchBarState.collectAsState()
+    val allPosts = listScreenViewModel.allPosts.collectAsLazyPagingItems()
+    val postsByQuery = listScreenViewModel.postsByQuery.collectAsLazyPagingItems()
     val searchQuery by listScreenViewModel.searchQuery.collectAsState()
     val focusRequester = remember { FocusRequester() }
     val swipeRefreshState = rememberSwipeRefreshState(
@@ -108,7 +107,7 @@ fun ListScreen(
                 contentPadding = PaddingValues(10.dp)
             ) {
                 items(
-                    items = allPosts,
+                    items = if (searchBarState == SearchBarState.OPEN) postsByQuery else allPosts,
                     key = { it.id }
                 ) { post ->
                     post?.let {

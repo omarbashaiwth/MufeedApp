@@ -23,9 +23,10 @@ class ListScreenViewModel @Inject constructor(
     var searchQuery = MutableStateFlow("")
         private set
 
+    val allPosts = postRepo.allPosts.cachedIn(viewModelScope)
 
-    val posts = searchQuery.flatMapLatest {
-        postRepo.allPosts(it)
+    val postsByQuery = searchQuery.flatMapLatest {
+        postRepo.postsByQuery(it)
     }.cachedIn(viewModelScope)
 
     fun onSearchBarStateChange(newValue: SearchBarState) {
