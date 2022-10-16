@@ -1,10 +1,8 @@
 package com.omarbashawith.mufeed_app.features.categories.presentation
 
 import android.annotation.SuppressLint
-import android.util.Log
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
 import androidx.compose.material.Scaffold
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -14,6 +12,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.paging.compose.collectAsLazyPagingItems
+import androidx.paging.compose.items
 import com.omarbashawith.mufeed_app.R
 import com.omarbashawith.mufeed_app.core.presentation.composables.DefaultTopBar
 import com.omarbashawith.mufeed_app.core.presentation.composables.PostItem
@@ -27,18 +26,36 @@ fun CategoriesScreen(
     viewModel: PostCategoryViewModel = hiltViewModel()
 ) {
 
-    val selectedTag by viewModel.tag.collectAsState()
     val context = LocalContext.current
-    val postsPaging = viewModel.postsByTag.collectAsLazyPagingItems()
-    val postsByTag = postsPaging.itemSnapshotList.items.filter {
-        it.tags.contains(selectedTag)
-    }
+    val selectedTag by viewModel.tag.collectAsState()
+    val filterResult = viewModel.filterResult.collectAsLazyPagingItems()
+
     val categoriesList = listOf(
-        Category(stringResource(R.string.android_label),context.getString(R.string.android),R.drawable.ic_android),
-        Category(stringResource(R.string.iphone_label),context.getString(R.string.iphone),R.drawable.ic_iphone),
-        Category(stringResource(R.string.website_label),context.getString(R.string.website),R.drawable.ic_web),
-        Category(stringResource(R.string.chrome_label),context.getString(R.string.chrome_extention),R.drawable.ic_chrome),
-        Category(stringResource(R.string.pc_label),context.getString(R.string.pc_programs),R.drawable.ic_computer),
+        Category(
+            stringResource(R.string.android_label),
+            context.getString(R.string.android),
+            R.drawable.ic_android
+        ),
+        Category(
+            stringResource(R.string.iphone_label),
+            context.getString(R.string.iphone),
+            R.drawable.ic_iphone
+        ),
+        Category(
+            stringResource(R.string.website_label),
+            context.getString(R.string.website),
+            R.drawable.ic_web
+        ),
+        Category(
+            stringResource(R.string.chrome_label),
+            context.getString(R.string.chrome_extention),
+            R.drawable.ic_chrome
+        ),
+        Category(
+            stringResource(R.string.pc_label),
+            context.getString(R.string.pc_programs),
+            R.drawable.ic_computer
+        ),
     )
 
     Scaffold(
@@ -48,15 +65,15 @@ fun CategoriesScreen(
     ) {
         LazyColumn(
             contentPadding = PaddingValues(16.dp)
-        ){
+        ) {
             item {
                 Row(
                     modifier = Modifier
                         .fillMaxWidth(),
                     horizontalArrangement = Arrangement.SpaceBetween,
                     verticalAlignment = Alignment.CenterVertically
-                ){
-                    categoriesList.forEach{ category ->
+                ) {
+                    categoriesList.forEach { category ->
                         CategoryItem(
                             item = Category(
                                 label = category.label,
@@ -65,7 +82,9 @@ fun CategoriesScreen(
                                 isSelected = selectedTag == category.tag
                             ),
                             onTagClick = {
-                                viewModel.onTagChange(category.tag)
+                                if (selectedTag != category.tag) {
+                                    viewModel.onTagChange(category.tag)
+                                }
                             }
                         )
                     }
@@ -74,14 +93,16 @@ fun CategoriesScreen(
 
             }
             items(
-                items = postsByTag,
-                key = {it.id}
-            ){ post ->
+                items = filterResult,
+                key = { it.id }
+            ) { post ->
+                post?.let {
                     PostItem(
                         modifier = Modifier.padding(bottom = 16.dp),
-                        post = post,
+                        post = it,
                         showTags = false
                     )
+                }
 
             }
         }

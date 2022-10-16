@@ -10,7 +10,7 @@ import com.omarbashawith.mufeed_app.core.data.model.Post
 @Dao
 interface PostsDao {
 
-    @Query("SELECT * FROM posts_table WHERE title LIKE '%' || :query || '%'")
+    @Query("SELECT * FROM posts_table WHERE title OR shortDescription LIKE '%' || :query || '%'")
     fun getPostsByQuery(query: String): PagingSource<Int, Post>
 
     @Query("SELECT * FROM posts_table")

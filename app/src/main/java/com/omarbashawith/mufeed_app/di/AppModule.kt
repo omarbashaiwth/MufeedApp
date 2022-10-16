@@ -1,6 +1,7 @@
 package com.omarbashawith.mufeed_app.di
 
 import android.app.Application
+import androidx.paging.ExperimentalPagingApi
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import com.omarbashawith.mufeed_app.features.categories.data.PostCategoryRepoImpl
@@ -50,6 +51,7 @@ object AppModule {
         ).build()
     }
 
+    @OptIn(ExperimentalPagingApi::class)
     @Provides
     @Singleton
     fun providePostRepo(
