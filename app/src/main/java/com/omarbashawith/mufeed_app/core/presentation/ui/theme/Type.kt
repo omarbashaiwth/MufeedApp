@@ -21,17 +21,12 @@ val tajawalFont = FontFamily(
 
 val typography = Typography(
 
-    //top bar title
+    //top bar title & post title
     h1 = TextStyle(
         fontFamily = tajawalFont,
         fontSize = 24.sp
     ),
 
-    // post title
-    h2 = TextStyle(
-        fontFamily = interFont,
-        fontSize = 24.sp
-    ),
     // short desc and full body and button
     body1 = TextStyle(
         fontFamily = tajawalFont,

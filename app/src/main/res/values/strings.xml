@@ -17,4 +17,8 @@
     <string name="website_label">مواقع ويب</string>
     <string name="chrome_label">إضافات كروم</string>
     <string name="pc_label">برامج كمبيوتر</string>
+    <string name="download_android">تحميل التطبيق للأندرويد</string>
+    <string name="download_iphone">تحميل التطبيق للأيفون</string>
+    <string name="download_extension">تحميل الاضافة</string>
+    <string name="go_to_website">الإنتقال الى الموقع</string>
 </resources>

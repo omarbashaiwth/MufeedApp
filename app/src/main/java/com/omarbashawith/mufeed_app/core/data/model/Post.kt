@@ -1,9 +1,11 @@
 package com.omarbashawith.mufeed_app.core.data.model
 
+import android.os.Parcelable
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import androidx.room.TypeConverters
+import kotlinx.parcelize.Parcelize
 
+@Parcelize
 @Entity(tableName = "posts_table")
 data class Post(
     @PrimaryKey(autoGenerate = false)
@@ -16,4 +18,4 @@ data class Post(
     val date: String,
     val tags: List<String>,
     val isFavorite: Boolean = false
-)
+): Parcelable

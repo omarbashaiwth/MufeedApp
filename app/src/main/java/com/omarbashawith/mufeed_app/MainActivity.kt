@@ -28,13 +28,17 @@ class MainActivity : ComponentActivity() {
                 val systemUiController = rememberSystemUiController()
                 systemUiController.setStatusBarColor(MaterialTheme.colors.primary)
                 val navController = rememberNavController()
-
+                val navBackStackEntry by navController.currentBackStackEntryAsState()
+                val hideBottomNav = navBackStackEntry?.arguments?.getBoolean(
+                    ARG_BOTTOM_NAV_VISIBILITY)
                 Scaffold(
                     backgroundColor = MaterialTheme.colors.background,
                     bottomBar = {
-                        BottomBarSection(
-                            navController = navController
-                        )
+                        if (hideBottomNav == null || !hideBottomNav) {
+                            BottomBarSection(
+                                navController = navController
+                            )
+                        }
                     }
                 ) {
                     DestinationsNavHost(
@@ -47,3 +51,5 @@ class MainActivity : ComponentActivity() {
         }
     }
 }
+
+private const val ARG_BOTTOM_NAV_VISIBILITY = "hideBottomNav"

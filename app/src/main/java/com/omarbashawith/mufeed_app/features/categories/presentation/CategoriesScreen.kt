@@ -1,6 +1,7 @@
 package com.omarbashawith.mufeed_app.features.categories.presentation
 
 import android.annotation.SuppressLint
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.Scaffold
@@ -11,18 +12,24 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavController
 import androidx.paging.compose.collectAsLazyPagingItems
 import androidx.paging.compose.items
+import coil.annotation.ExperimentalCoilApi
 import com.omarbashawith.mufeed_app.R
 import com.omarbashawith.mufeed_app.core.presentation.composables.DefaultTopBar
 import com.omarbashawith.mufeed_app.core.presentation.composables.PostItem
 import com.omarbashawith.mufeed_app.features.categories.data.Category
+import com.omarbashawith.mufeed_app.features.destinations.PostDetailsScreenDestination
 import com.ramcosta.composedestinations.annotation.Destination
+import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 
+@ExperimentalCoilApi
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Destination
 @Composable
 fun CategoriesScreen(
+    navigator: DestinationsNavigator,
     viewModel: PostCategoryViewModel = hiltViewModel()
 ) {
 
@@ -98,7 +105,9 @@ fun CategoriesScreen(
             ) { post ->
                 post?.let {
                     PostItem(
-                        modifier = Modifier.padding(bottom = 16.dp),
+                        modifier = Modifier
+                            .padding(bottom = 16.dp)
+                            .clickable { navigator.navigate(PostDetailsScreenDestination(post)) },
                         post = it,
                         showTags = false
                     )

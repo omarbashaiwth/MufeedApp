@@ -7,6 +7,7 @@ import com.omarbashawith.mufeed_app.features.list.data.remote.PostApi
 import com.omarbashawith.mufeed_app.core.data.model.Post
 import retrofit2.HttpException
 import java.io.IOException
+import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
 @OptIn(ExperimentalPagingApi::class)
@@ -17,6 +18,14 @@ class PostsRemoteMediator @Inject constructor(
     private val postDao = db.postsDao()
     private val remoteKeysDao = db.remoteKeysDao()
 
+//    override suspend fun initialize(): InitializeAction {
+//        val cacheTimeout = TimeUnit.MILLISECONDS.convert(1, TimeUnit.DAYS)
+//        return if (System.currentTimeMillis() - db.lastUpdated() >= cacheTimeout){
+//            InitializeAction.SKIP_INITIAL_REFRESH
+//        } else {
+//            InitializeAction.LAUNCH_INITIAL_REFRESH
+//        }
+//    }
     override suspend fun load(loadType: LoadType, state: PagingState<Int, Post>): MediatorResult {
         return try {
             val curPage = when (loadType) {

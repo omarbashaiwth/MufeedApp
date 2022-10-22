@@ -2,6 +2,7 @@ package com.omarbashawith.mufeed_app.features.list.presentation
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.*
@@ -19,6 +20,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.paging.LoadState
 import androidx.paging.compose.collectAsLazyPagingItems
 import androidx.paging.compose.items
+import coil.annotation.ExperimentalCoilApi
 import com.google.accompanist.swiperefresh.SwipeRefresh
 import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
 import com.omarbashawith.mufeed_app.R
@@ -26,13 +28,17 @@ import com.omarbashawith.mufeed_app.core.presentation.composables.PostItem
 import com.omarbashawith.mufeed_app.core.presentation.composables.DefaultTopBar
 import com.omarbashawith.mufeed_app.core.presentation.composables.SearchBar
 import com.omarbashawith.mufeed_app.core.presentation.composables.SearchBarState
+import com.omarbashawith.mufeed_app.features.destinations.PostDetailsScreenDestination
 import com.ramcosta.composedestinations.annotation.Destination
+import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 import retrofit2.HttpException
 import java.io.IOException
 
+@ExperimentalCoilApi
 @Destination(start = true)
 @Composable
 fun ListScreen(
+    navigator: DestinationsNavigator,
     listScreenViewModel: ListScreenViewModel = hiltViewModel(),
     scaffoldState: ScaffoldState = rememberScaffoldState()
 ) {
@@ -112,7 +118,13 @@ fun ListScreen(
                 ) { post ->
                     post?.let {
                         PostItem(
-                            modifier = Modifier.padding(bottom = 16.dp),
+                            modifier = Modifier
+                                .clickable {
+                                    navigator.navigate(
+                                        PostDetailsScreenDestination(post = it)
+                                    )
+                                }
+                                .padding(bottom = 16.dp),
                             post = it,
                             showTags = true
                         )
