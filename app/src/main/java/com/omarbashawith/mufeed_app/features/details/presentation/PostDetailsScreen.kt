@@ -49,7 +49,7 @@ fun PostDetailsScreen(
 
     val context = LocalContext.current
     val uriHandler = LocalUriHandler.current
-    val isFavorite by viewModel.isFavorite.collectAsState(initial = post.isFavorite)
+    val isFavorite by viewModel.isFavorite.collectAsState()
 
     Column(
         modifier = Modifier
@@ -106,7 +106,6 @@ fun PostDetailsScreen(
                     onClick = {
                        viewModel.onToggleFavorite(
                            id = post.id,
-                           favorite = isFavorite
                        )
                     }
                 )
