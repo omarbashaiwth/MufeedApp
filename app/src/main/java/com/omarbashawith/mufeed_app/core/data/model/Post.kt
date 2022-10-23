@@ -17,5 +17,5 @@ data class Post(
     val imageUrl:String,
     val date: String,
     val tags: List<String>,
-    val isFavorite: Boolean = false
+    var isFavorite: Boolean = false
 ): Parcelable

@@ -8,8 +8,20 @@ import androidx.compose.ui.platform.UriHandler
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import com.omarbashawith.mufeed_app.features.list.domain.PostRepo
+import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class PostDetailsViewModel : ViewModel() {
+@HiltViewModel
+class PostDetailsViewModel @Inject constructor(
+    private val postRepo: PostRepo
+) : ViewModel() {
+
+    var isFavorite = MutableStateFlow(false)
+        private set
 
     fun onLinkClick(uriHandler: UriHandler, link: String) {
         uriHandler.openUri(link)
@@ -46,5 +58,10 @@ class PostDetailsViewModel : ViewModel() {
             Intent.createChooser(intent, "shareWith"),
             null
         )
+    }
+
+    fun onToggleFavorite(id: String, favorite: Boolean) = viewModelScope.launch {
+        isFavorite.value = !favorite
+        postRepo.updateFavoritePost(id,isFavorite.value)
     }
 }

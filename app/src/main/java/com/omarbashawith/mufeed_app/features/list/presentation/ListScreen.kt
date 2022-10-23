@@ -39,14 +39,14 @@ import java.io.IOException
 @Composable
 fun ListScreen(
     navigator: DestinationsNavigator,
-    listScreenViewModel: ListScreenViewModel = hiltViewModel(),
+    viewModel: ListScreenViewModel = hiltViewModel(),
     scaffoldState: ScaffoldState = rememberScaffoldState()
 ) {
     val context = LocalContext.current
-    val searchBarState by listScreenViewModel.searchBarState.collectAsState()
-    val allPosts = listScreenViewModel.allPosts.collectAsLazyPagingItems()
-    val postsByQuery = listScreenViewModel.postsByQuery.collectAsLazyPagingItems()
-    val searchQuery by listScreenViewModel.searchQuery.collectAsState()
+    val searchBarState by viewModel.searchBarState.collectAsState()
+    val allPosts = viewModel.allPosts.collectAsLazyPagingItems()
+    val postsByQuery = viewModel.postsByQuery.collectAsLazyPagingItems()
+    val searchQuery by viewModel.searchQuery.collectAsState()
     val focusRequester = remember { FocusRequester() }
     val swipeRefreshState = rememberSwipeRefreshState(
         isRefreshing = allPosts.loadState.refresh is LoadState.Loading
@@ -76,7 +76,7 @@ fun ListScreen(
                         title = stringResource(R.string.all_posts),
                         icon = Icons.Default.Search,
                         onIconClick = {
-                            listScreenViewModel.onSearchBarStateChange(SearchBarState.OPEN)
+                            viewModel.onSearchBarStateChange(SearchBarState.OPEN)
                         }
                     )
                 }
@@ -84,10 +84,10 @@ fun ListScreen(
                     SearchBar(
                         query = searchQuery,
                         onQueryChange = {
-                            listScreenViewModel.onSearchQueryChange(it)
+                            viewModel.onSearchQueryChange(it)
                         },
                         onCloseClick = {
-                            listScreenViewModel.onSearchBarStateChange(SearchBarState.CLOSE)
+                            viewModel.onSearchBarStateChange(SearchBarState.CLOSE)
                         },
                         onSearchClick ={
 
@@ -104,7 +104,7 @@ fun ListScreen(
         SwipeRefresh(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(paddingValues),
+                .padding(paddingValues.calculateBottomPadding()),
             state = swipeRefreshState,
             onRefresh = { allPosts.refresh() }
         ) {
@@ -126,7 +126,11 @@ fun ListScreen(
                                 }
                                 .padding(bottom = 16.dp),
                             post = it,
-                            showTags = true
+                            onFavoriteClick = {
+                                viewModel.onToggleFavorite(
+                                    id = it.id,
+                                    favorite = it.isFavorite)
+                            }
                         )
                     }
                 }

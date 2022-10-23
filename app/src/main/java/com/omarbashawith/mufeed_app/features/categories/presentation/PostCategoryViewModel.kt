@@ -10,6 +10,7 @@ import androidx.paging.map
 import com.omarbashawith.mufeed_app.core.data.model.Post
 import com.omarbashawith.mufeed_app.features.categories.domain.FilterPostsUseCase
 import com.omarbashawith.mufeed_app.features.categories.domain.PostCategoryRepo
+import com.omarbashawith.mufeed_app.features.list.domain.PostRepo
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -21,7 +22,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class PostCategoryViewModel @Inject constructor(
-    private val filterPostsUseCase: FilterPostsUseCase
+    private val filterPostsUseCase: FilterPostsUseCase,
+    private val postRepo: PostRepo
 ) : ViewModel() {
 
     var tag = MutableStateFlow("أندرويد")
@@ -38,6 +40,10 @@ class PostCategoryViewModel @Inject constructor(
         tag.value = newTag
         filterResult.value = filterPostsUseCase(newTag,viewModelScope)
         Log.d("TagChange","tag change to $newTag")
+    }
+
+    fun onToggleFavorite(id: String, favorite: Boolean) = viewModelScope.launch {
+        postRepo.updateFavoritePost(id,!favorite)
     }
 
 }

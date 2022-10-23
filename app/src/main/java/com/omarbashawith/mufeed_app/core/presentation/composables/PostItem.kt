@@ -30,7 +30,8 @@ import com.omarbashawith.mufeed_app.core.util.timeAgo
 fun PostItem(
     modifier: Modifier = Modifier,
     post: Post,
-    showTags: Boolean
+    showTags: Boolean = true,
+    onFavoriteClick: () -> Unit
 ) {
 
     Card(
@@ -67,7 +68,7 @@ fun PostItem(
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis
                 )
-                IconButton(onClick = {}) {
+                IconButton(onClick = {onFavoriteClick()}) {
                     Icon(
                         imageVector = if (post.isFavorite) Icons.Filled.Star else Icons.Outlined.StarBorder,
                         contentDescription = null,

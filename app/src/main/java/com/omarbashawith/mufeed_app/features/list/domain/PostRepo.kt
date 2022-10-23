@@ -10,4 +10,8 @@ interface PostRepo {
     val allPosts: Flow<PagingData<Post>>
 
     fun postsByQuery(query: String): Flow<PagingData<Post>>
+
+    suspend fun updateFavoritePost(id: String, newValue: Boolean)
+
+    fun getFavoritePosts(): Flow<List<Post>>
 }

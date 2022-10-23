@@ -8,11 +8,16 @@ import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Share
+import androidx.compose.material.icons.filled.Star
 import androidx.compose.material.icons.filled.StarBorder
+import androidx.compose.material.icons.outlined.StarBorder
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
@@ -44,6 +49,7 @@ fun PostDetailsScreen(
 
     val context = LocalContext.current
     val uriHandler = LocalUriHandler.current
+    val isFavorite by viewModel.isFavorite.collectAsState(initial = post.isFavorite)
 
     Column(
         modifier = Modifier
@@ -95,8 +101,14 @@ fun PostDetailsScreen(
                 verticalAlignment = Alignment.CenterVertically,
             ) {
                 CircleIcon(
-                    icon = Icons.Default.StarBorder,
-                    onClick = { }
+                    icon = if (isFavorite) Icons.Filled.Star else Icons.Outlined.StarBorder,
+                    tint = if (isFavorite) Color.Yellow else MaterialTheme.colors.onPrimary,
+                    onClick = {
+                       viewModel.onToggleFavorite(
+                           id = post.id,
+                           favorite = isFavorite
+                       )
+                    }
                 )
                 Spacer(modifier = Modifier.width(16.dp))
                 CircleIcon(
@@ -159,6 +171,7 @@ private fun CircleIcon(
     icon: ImageVector,
     onClick: () -> Unit,
     iconSize: Dp = 24.dp,
+    tint: Color = MaterialTheme.colors.onPrimary
 ) {
     Box(
         modifier = Modifier
@@ -172,7 +185,7 @@ private fun CircleIcon(
             imageVector = icon,
             contentDescription = null,
             modifier = Modifier.size(iconSize),
-            tint = MaterialTheme.colors.onPrimary
+            tint = tint
         )
     }
 }

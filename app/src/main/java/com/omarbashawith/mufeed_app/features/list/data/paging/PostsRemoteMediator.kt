@@ -7,7 +7,6 @@ import com.omarbashawith.mufeed_app.features.list.data.remote.PostApi
 import com.omarbashawith.mufeed_app.core.data.model.Post
 import retrofit2.HttpException
 import java.io.IOException
-import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
 @OptIn(ExperimentalPagingApi::class)
@@ -18,7 +17,7 @@ class PostsRemoteMediator @Inject constructor(
     private val postDao = db.postsDao()
     private val remoteKeysDao = db.remoteKeysDao()
 
-//    override suspend fun initialize(): InitializeAction {
+    //    override suspend fun initialize(): InitializeAction {
 //        val cacheTimeout = TimeUnit.MILLISECONDS.convert(1, TimeUnit.DAYS)
 //        return if (System.currentTimeMillis() - db.lastUpdated() >= cacheTimeout){
 //            InitializeAction.SKIP_INITIAL_REFRESH
@@ -36,8 +35,8 @@ class PostsRemoteMediator @Inject constructor(
                 LoadType.PREPEND -> {
                     val remoteKeys = getRemoteKeyForFirstItem(state)
                     val prePage = remoteKeys?.prePage ?: return MediatorResult.Success(
-                            endOfPaginationReached = remoteKeys != null
-                        )
+                        endOfPaginationReached = remoteKeys != null
+                    )
                     prePage
                 }
                 LoadType.APPEND -> {
@@ -48,8 +47,11 @@ class PostsRemoteMediator @Inject constructor(
                     nextPage
                 }
             }
-            val posts = api.getAllPosts(pageNumber = curPage)
-            val endOfPagination = posts.isEmpty()
+
+            val remotePosts = api.getAllPosts(pageNumber = curPage)
+            val updatedPosts = remotePosts.toUpdatedPosts(postDao)
+
+            val endOfPagination = remotePosts.isEmpty()
 
             val prePage = if (curPage == 1) null else curPage - 1
             val nextPage = if (endOfPagination) null else curPage + 1
@@ -59,7 +61,7 @@ class PostsRemoteMediator @Inject constructor(
                     postDao.deleteAllPosts()
                     remoteKeysDao.deleteAllRemoteKeys()
                 }
-                val keys = posts.map {
+                val keys = remotePosts.map {
                     RemoteKeys(
                         id = it.id,
                         prePage = prePage,
@@ -67,7 +69,7 @@ class PostsRemoteMediator @Inject constructor(
                     )
                 }
 
-                postDao.insertPosts(posts)
+                postDao.insertPosts(updatedPosts)
                 remoteKeysDao.insertAllRemoteKeys(keys)
             }
 

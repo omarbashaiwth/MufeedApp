@@ -7,6 +7,7 @@ import com.omarbashawith.mufeed_app.features.list.data.remote.PostApi
 import com.omarbashawith.mufeed_app.core.data.model.Post
 import com.omarbashawith.mufeed_app.features.list.domain.PostRepo
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.asFlow
 import javax.inject.Inject
 
 @ExperimentalPagingApi
@@ -28,4 +29,11 @@ class PostRepoImpl @Inject constructor(
         pagingSourceFactory = {dao.getPostsByQuery(query)}
     ).flow
 
+    override suspend fun updateFavoritePost(id: String, newValue: Boolean) {
+        dao.updateFavoritePost(id, newValue)
+    }
+
+    override fun getFavoritePosts(): Flow<List<Post>> {
+        return dao.getFavoritePosts()
+    }
 }

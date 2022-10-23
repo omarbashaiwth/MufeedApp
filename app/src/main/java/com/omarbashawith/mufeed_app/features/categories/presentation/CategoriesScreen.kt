@@ -109,7 +109,13 @@ fun CategoriesScreen(
                             .padding(bottom = 16.dp)
                             .clickable { navigator.navigate(PostDetailsScreenDestination(post)) },
                         post = it,
-                        showTags = false
+                        showTags = false,
+                        onFavoriteClick = {
+                            viewModel.onToggleFavorite(
+                                id = it.id,
+                                favorite = it.isFavorite
+                            )
+                        }
                     )
                 }
 
