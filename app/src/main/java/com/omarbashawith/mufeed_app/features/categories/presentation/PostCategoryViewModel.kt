@@ -13,10 +13,7 @@ import com.omarbashawith.mufeed_app.features.categories.domain.PostCategoryRepo
 import com.omarbashawith.mufeed_app.features.list.domain.PostRepo
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.filter
-import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.flow.flatMapLatest
+import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -38,7 +35,9 @@ class PostCategoryViewModel @Inject constructor(
 
     fun onTagChange(newTag: String) = viewModelScope.launch {
         tag.value = newTag
-        filterResult.value = filterPostsUseCase(newTag,viewModelScope)
+        filterPostsUseCase(newTag,viewModelScope).collect{
+            filterResult.value = it
+        }
         Log.d("TagChange","tag change to $newTag")
     }
 

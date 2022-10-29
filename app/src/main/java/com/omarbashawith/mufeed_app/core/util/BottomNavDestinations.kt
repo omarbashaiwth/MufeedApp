@@ -6,6 +6,7 @@ import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Star
 import androidx.compose.ui.graphics.vector.ImageVector
+import coil.annotation.ExperimentalCoilApi
 import com.omarbashawith.mufeed_app.features.destinations.CategoriesScreenDestination
 import com.omarbashawith.mufeed_app.features.destinations.FavoritesScreenDestination
 import com.omarbashawith.mufeed_app.features.destinations.ListScreenDestination
@@ -16,16 +17,19 @@ enum class BottomNavDestinations(
     val title: String,
     val icon: ImageVector
 ){
+    @ExperimentalCoilApi
     HomeScreen(
         direction = ListScreenDestination,
         title = "الرئيسية",
         icon = Icons.Filled.Home
     ),
+    @ExperimentalCoilApi
     CategoryScreen(
         direction = CategoriesScreenDestination,
         title = "التصنيفات",
         icon = Icons.Filled.Category
     ),
+    @ExperimentalCoilApi
     FavoriteScreen(
         direction = FavoritesScreenDestination,
         title = "المفضلة",

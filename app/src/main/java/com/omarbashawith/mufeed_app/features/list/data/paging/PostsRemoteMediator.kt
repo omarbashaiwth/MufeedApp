@@ -49,7 +49,7 @@ class PostsRemoteMediator @Inject constructor(
             }
 
             val remotePosts = api.getAllPosts(pageNumber = curPage)
-            val updatedPosts = remotePosts.toUpdatedPosts(postDao)
+            val updatedPosts = remotePosts.updateFavorites(postDao)
 
             val endOfPagination = remotePosts.isEmpty()
 
@@ -69,7 +69,7 @@ class PostsRemoteMediator @Inject constructor(
                     )
                 }
 
-                postDao.insertPosts(updatedPosts)
+                postDao.insertPosts(updatedPosts ?: remotePosts)
                 remoteKeysDao.insertAllRemoteKeys(keys)
             }
 

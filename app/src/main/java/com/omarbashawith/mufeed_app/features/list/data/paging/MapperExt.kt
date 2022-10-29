@@ -5,15 +5,17 @@ import com.omarbashawith.mufeed_app.features.list.data.local.PostsDao
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.onEach
 
-suspend fun List<Post>.toUpdatedPosts(
+suspend fun List<Post>.updateFavorites(
     postsDao: PostsDao,
-): List<Post> {
-    val favoritePosts = postsDao.getFavoritePosts()
-    return onEach { remotePost ->
-        favoritePosts.first().onEach { favoritePost ->
-            if (remotePost.id == favoritePost.id) {
-                remotePost.isFavorite = favoritePost.isFavorite
+): List<Post>? {
+    val favoritePosts = postsDao.getFavoritePosts().first()
+    return if(favoritePosts.isNotEmpty()) {
+        onEach { remotePost ->
+            favoritePosts.onEach { favoritePost ->
+                if (remotePost.id == favoritePost.id) {
+                    remotePost.isFavorite = favoritePost.isFavorite
+                }
             }
         }
-    }
+    } else null
 }

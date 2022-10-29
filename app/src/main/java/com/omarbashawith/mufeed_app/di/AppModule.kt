@@ -3,28 +3,41 @@ package com.omarbashawith.mufeed_app.di
 import android.app.Application
 import androidx.paging.ExperimentalPagingApi
 import androidx.room.Room
-import androidx.room.RoomDatabase
 import com.omarbashawith.mufeed_app.features.categories.data.PostCategoryRepoImpl
 import com.omarbashawith.mufeed_app.features.categories.domain.PostCategoryRepo
 import com.omarbashawith.mufeed_app.features.list.data.PostRepoImpl
-import com.omarbashawith.mufeed_app.features.list.data.local.PostsDao
 import com.omarbashawith.mufeed_app.features.list.data.local.PostsDatabase
-import com.omarbashawith.mufeed_app.features.list.data.local.RemoteKeysDao
 import com.omarbashawith.mufeed_app.features.list.data.remote.PostApi
 import com.omarbashawith.mufeed_app.features.list.domain.PostRepo
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
-import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
+import okhttp3.Interceptor
+import okhttp3.OkHttpClient
+import okhttp3.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
-import retrofit2.create
+import java.io.IOException
 import javax.inject.Singleton
 
 @Module
 @InstallIn(SingletonComponent::class)
 object AppModule {
+
+//    @Provides
+//    @Singleton
+//    fun provideClient(): OkHttpClient{
+//        val cacheControlIntercept = Interceptor { chain ->
+//            val originalResponse: Response = chain.proceed(chain.request())
+//            originalResponse.newBuilder()
+//                .header("Cache-Control", "max-age=3600")
+//                .build()
+//        }
+//        return OkHttpClient.Builder()
+//            .addInterceptor(cacheControlIntercept)
+//            .build()
+//    }
 
     @Provides
     @Singleton
