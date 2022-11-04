@@ -1,10 +1,12 @@
 package com.omarbashawith.mufeed_app.features.list.data.paging
 
+import android.util.Log
 import androidx.paging.*
 import androidx.room.withTransaction
 import com.omarbashawith.mufeed_app.features.list.data.local.PostsDatabase
 import com.omarbashawith.mufeed_app.features.list.data.remote.PostApi
 import com.omarbashawith.mufeed_app.core.data.model.Post
+import kotlinx.coroutines.flow.first
 import retrofit2.HttpException
 import java.io.IOException
 import javax.inject.Inject
@@ -47,7 +49,6 @@ class PostsRemoteMediator @Inject constructor(
                     nextPage
                 }
             }
-
             val remotePosts = api.getAllPosts(pageNumber = curPage)
             val updatedPosts = remotePosts.updateFavorites(postDao)
 
