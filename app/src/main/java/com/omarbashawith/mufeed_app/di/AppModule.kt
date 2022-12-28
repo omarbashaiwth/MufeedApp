@@ -44,7 +44,7 @@ object AppModule {
     fun provideRetrofit(): Retrofit {
         return Retrofit.Builder()
             .addConverterFactory(GsonConverterFactory.create())
-            .baseUrl("http://192.168.0.125:8080/")
+            .baseUrl("http://192.168.100.14:8080/")
             .build()
     }
 

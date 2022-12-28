@@ -5,6 +5,8 @@ plugins {
     id 'dagger.hilt.android.plugin'
     id 'com.google.devtools.ksp' version '1.7.20-1.0.7'
     id 'kotlin-parcelize'
+    id 'kotlinx-serialization'
+    id 'com.google.gms.google-services'
 }
 
 //kotlin {
@@ -119,6 +121,13 @@ dependencies {
     // Accompanist
     implementation "com.google.accompanist:accompanist-systemuicontroller:0.17.0"
     implementation "com.google.accompanist:accompanist-swiperefresh:0.21.3-beta"
+
+    //FCM
+    implementation 'com.google.firebase:firebase-messaging-ktx:23.1.1'
+
+    //Serialization
+    implementation 'org.jetbrains.kotlinx:kotlinx-serialization-json:1.4.1'
+
 
 
     // Unit Tests

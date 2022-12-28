@@ -7,12 +7,11 @@ import com.omarbashawith.mufeed_app.features.list.data.remote.PostApi
 import com.omarbashawith.mufeed_app.core.data.model.Post
 import com.omarbashawith.mufeed_app.features.list.domain.PostRepo
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.asFlow
 import javax.inject.Inject
 
 @ExperimentalPagingApi
 class PostRepoImpl @Inject constructor(
-    api: PostApi,
+    private val api: PostApi,
     db: PostsDatabase,
 ): PostRepo {
 
@@ -35,5 +34,9 @@ class PostRepoImpl @Inject constructor(
 
     override fun getFavoritePosts(): Flow<List<Post>> {
         return dao.getFavoritePosts()
+    }
+
+    override suspend fun sendToken(token: FcmToken) {
+        api.sendToken(token)
     }
 }

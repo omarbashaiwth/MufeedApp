@@ -2,6 +2,7 @@ package com.omarbashawith.mufeed_app.features.list.domain
 
 import androidx.paging.PagingData
 import com.omarbashawith.mufeed_app.core.data.model.Post
+import com.omarbashawith.mufeed_app.features.list.data.FcmToken
 import kotlinx.coroutines.flow.Flow
 
 interface PostRepo {
@@ -14,4 +15,6 @@ interface PostRepo {
     suspend fun updateFavoritePost(id: String, newValue: Boolean)
 
     fun getFavoritePosts(): Flow<List<Post>>
+
+    suspend fun sendToken(token: FcmToken)
 }
