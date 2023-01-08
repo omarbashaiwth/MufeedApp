@@ -1,4 +1,4 @@
-package com.omarbashawith.mufeed_app.features.categories.domain
+package com.omarbashawith.mufeed_app.features.list.domain
 
 import androidx.paging.PagingData
 import com.omarbashawith.mufeed_app.core.data.model.Post

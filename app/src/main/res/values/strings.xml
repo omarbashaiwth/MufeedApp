@@ -22,4 +22,5 @@
     <string name="download_extension">تحميل الاضافة</string>
     <string name="go_to_website">الإنتقال الى الموقع</string>
     <string name="favorites">المفضلات</string>
+    <string name="no_filter">الكل</string>
 </resources>

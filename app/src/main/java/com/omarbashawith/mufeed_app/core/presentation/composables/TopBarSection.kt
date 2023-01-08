@@ -19,17 +19,20 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.unit.Dp
 import com.omarbashawith.mufeed_app.R
 
 @Composable
 fun DefaultTopBar(
     title: String,
+    elevation: Dp = AppBarDefaults.TopAppBarElevation,
     icon: ImageVector? = null,
     onIconClick: () -> Unit = {}
 ) {
     TopAppBar(
         modifier = Modifier
             .background(MaterialTheme.colors.primary),
+        elevation = elevation,
         title = {
             Text(
                 text = title,

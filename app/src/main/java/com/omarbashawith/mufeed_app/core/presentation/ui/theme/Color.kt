@@ -21,4 +21,5 @@ val EerieBlack = Color(0xFF1F1F1F)
 val Gainsboro = Color(0xFFDADADA)
 val BistreBrown = Color(0xFF8B6B19)
 val LightSilver = Color(0xFFD9D9D9)
+val Bronze = Color(0xFFA89B57)
 

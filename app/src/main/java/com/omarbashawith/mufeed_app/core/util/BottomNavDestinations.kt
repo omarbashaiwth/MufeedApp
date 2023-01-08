@@ -1,13 +1,10 @@
 package com.omarbashawith.mufeed_app.core.util
 
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Category
-import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Star
 import androidx.compose.ui.graphics.vector.ImageVector
 import coil.annotation.ExperimentalCoilApi
-import com.omarbashawith.mufeed_app.features.destinations.CategoriesScreenDestination
 import com.omarbashawith.mufeed_app.features.destinations.FavoritesScreenDestination
 import com.omarbashawith.mufeed_app.features.destinations.ListScreenDestination
 import com.ramcosta.composedestinations.spec.DirectionDestinationSpec
@@ -22,12 +19,6 @@ enum class BottomNavDestinations(
         direction = ListScreenDestination,
         title = "الرئيسية",
         icon = Icons.Filled.Home
-    ),
-    @ExperimentalCoilApi
-    CategoryScreen(
-        direction = CategoriesScreenDestination,
-        title = "التصنيفات",
-        icon = Icons.Filled.Category
     ),
     @ExperimentalCoilApi
     FavoriteScreen(

@@ -13,10 +13,8 @@ import androidx.navigation.compose.rememberNavController
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import com.omarbashawith.mufeed_app.core.presentation.composables.BottomBarSection
 import com.omarbashawith.mufeed_app.core.presentation.ui.theme.MufeedAppTheme
-import com.omarbashawith.mufeed_app.core.util.BottomNavDestinations
 import com.omarbashawith.mufeed_app.features.NavGraphs
 import com.ramcosta.composedestinations.DestinationsNavHost
-import com.ramcosta.composedestinations.annotation.RootNavGraph
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint

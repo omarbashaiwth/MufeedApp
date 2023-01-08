@@ -3,8 +3,8 @@ package com.omarbashawith.mufeed_app.di
 import android.app.Application
 import androidx.paging.ExperimentalPagingApi
 import androidx.room.Room
-import com.omarbashawith.mufeed_app.features.categories.data.PostCategoryRepoImpl
-import com.omarbashawith.mufeed_app.features.categories.domain.PostCategoryRepo
+import com.omarbashawith.mufeed_app.features.list.data.PostCategoryRepoImpl
+import com.omarbashawith.mufeed_app.features.list.domain.PostCategoryRepo
 import com.omarbashawith.mufeed_app.features.list.data.PostRepoImpl
 import com.omarbashawith.mufeed_app.features.list.data.local.PostsDatabase
 import com.omarbashawith.mufeed_app.features.list.data.remote.PostApi
@@ -13,12 +13,8 @@ import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
-import okhttp3.Interceptor
-import okhttp3.OkHttpClient
-import okhttp3.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
-import java.io.IOException
 import javax.inject.Singleton
 
 @Module
@@ -44,7 +40,7 @@ object AppModule {
     fun provideRetrofit(): Retrofit {
         return Retrofit.Builder()
             .addConverterFactory(GsonConverterFactory.create())
-            .baseUrl("http://192.168.100.14:8080/")
+            .baseUrl("http://192.168.0.125:8080/")
             .build()
     }
 
@@ -78,7 +74,7 @@ object AppModule {
     @Singleton
     fun providePostCategoryRepo(
         db: PostsDatabase
-    ): PostCategoryRepo{
+    ): PostCategoryRepo {
         return PostCategoryRepoImpl(db)
     }
 }

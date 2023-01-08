@@ -1,13 +1,11 @@
 package com.omarbashawith.mufeed_app.features.list.presentation
 
+import android.annotation.SuppressLint
 import android.util.Log
-import androidx.compose.foundation.BorderStroke
-import androidx.compose.foundation.Image
-import androidx.compose.foundation.clickable
+import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.rememberLazyListState
-import androidx.compose.foundation.rememberScrollState
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Search
@@ -31,14 +29,15 @@ import com.omarbashawith.mufeed_app.core.presentation.composables.PostItem
 import com.omarbashawith.mufeed_app.core.presentation.composables.DefaultTopBar
 import com.omarbashawith.mufeed_app.core.presentation.composables.SearchBar
 import com.omarbashawith.mufeed_app.core.presentation.composables.SearchBarState
+import com.omarbashawith.mufeed_app.features.list.data.Category
 import com.omarbashawith.mufeed_app.features.destinations.PostDetailsScreenDestination
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import retrofit2.HttpException
 import java.io.IOException
 
+@SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @ExperimentalCoilApi
 @Destination(start = true)
 @Composable
@@ -52,6 +51,7 @@ fun ListScreen(
     val connectivityState by viewModel.connectivityState.collectAsState()
     val searchBarState by viewModel.searchBarState.collectAsState()
     val allPosts = viewModel.allPosts.collectAsLazyPagingItems()
+    val filteredPosts = viewModel.filterResult.collectAsLazyPagingItems()
     val postsByQuery = viewModel.postsByQuery.collectAsLazyPagingItems()
     val searchQuery by viewModel.searchQuery.collectAsState()
     val focusRequester = remember { FocusRequester() }
@@ -59,9 +59,30 @@ fun ListScreen(
     val swipeRefreshState = rememberSwipeRefreshState(
         isRefreshing = allPosts.loadState.refresh is LoadState.Loading
     )
+    val selectedFilter by viewModel.filter.collectAsState()
 
-    LaunchedEffect(key1 = allPosts.loadState.refresh) {
-        when (val loadState = allPosts.loadState.refresh) {
+    val filtersList = listOf(
+        Category(
+            label = stringResource(R.string.no_filter),
+            tag = context.getString(R.string.no_filter)
+        ),
+        Category(
+            label = stringResource(R.string.website_label),
+            tag = context.getString(R.string.website),
+        ),
+        Category(
+            label = stringResource(R.string.android_label),
+            tag = context.getString(R.string.android),
+        ),
+        Category(
+            label = stringResource(R.string.iphone_label),
+            tag = context.getString(R.string.iphone),
+        )
+
+    )
+
+    LaunchedEffect(key1 = filteredPosts.loadState.refresh) {
+        when (val loadState = filteredPosts.loadState.refresh) {
             is LoadState.Error -> {
                 val errorMessage = when (loadState.error) {
                     is IOException -> context.getString(
@@ -71,7 +92,10 @@ fun ListScreen(
                     is HttpException -> context.getString(R.string.server_exception_msg)
                     else -> context.getString(R.string.general_exception_msg)
                 }
-                Log.d("ListScreen","LoadState: $loadState\n Message: $errorMessage\n PostsLoadState: ${allPosts.loadState}")
+                Log.d(
+                    "ListScreen",
+                    "LoadState: $loadState\n Message: $errorMessage\n PostsLoadState: ${filteredPosts.loadState}"
+                )
                 scaffoldState.snackbarHostState.showSnackbar(message = errorMessage)
             }
             else -> Unit
@@ -85,6 +109,7 @@ fun ListScreen(
             when (searchBarState) {
                 SearchBarState.CLOSE -> {
                     DefaultTopBar(
+                        elevation = 0.dp,
                         title = stringResource(R.string.all_posts),
                         icon = Icons.Default.Search,
                         onIconClick = {
@@ -112,11 +137,10 @@ fun ListScreen(
                 }
             }
         }
-    ) { paddingValues ->
+    ) {
         SwipeRefresh(
             modifier = Modifier
-                .fillMaxSize()
-                .padding(paddingValues.calculateBottomPadding()),
+                .fillMaxSize(),
             state = swipeRefreshState,
             onRefresh = {
                 allPosts.refresh()
@@ -126,12 +150,48 @@ fun ListScreen(
                 }
             }
         ) {
+            LazyColumn {
+                if (searchBarState == SearchBarState.CLOSE) {
+                    // Filter Section
+                    item {
+                        Surface(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .background(MaterialTheme.colors.primary)
+                                .padding(12.dp),
+                        ) {
+                            Row(
+                                modifier = Modifier
+                                    .background(MaterialTheme.colors.primary)
+                                    .padding(8.dp),
+                                verticalAlignment = Alignment.CenterVertically,
+                                horizontalArrangement = Arrangement.SpaceBetween
 
-            LazyColumn(
-                contentPadding = PaddingValues(10.dp)
-            ) {
+                            ) {
+                                filtersList.forEach { category ->
+                                    FilterItem(
+                                        item = Category(
+                                            label = category.label,
+                                            tag = category.tag,
+                                            isSelected = selectedFilter == category.tag
+                                        ),
+                                        onFilterClick = {
+                                            if (selectedFilter != category.tag) {
+                                                viewModel.onFilterChange(category.tag)
+                                            }
+                                        }
+                                    )
+                                }
+                            }
+                        }
+                    }
+                }
+                item {
+                    Spacer(modifier = Modifier.height(12.dp))
+                }
+
                 items(
-                    items = if (searchBarState == SearchBarState.OPEN) postsByQuery else allPosts,
+                    items = if (searchBarState == SearchBarState.OPEN) postsByQuery else filteredPosts,
                     key = { it.id }
                 ) { post ->
                     post?.let {
@@ -142,7 +202,7 @@ fun ListScreen(
                                         PostDetailsScreenDestination(post = it)
                                     )
                                 }
-                                .padding(bottom = 16.dp),
+                                .padding(bottom = 16.dp, start = 10.dp, end = 10.dp),
                             post = it,
                             onFavoriteClick = {
                                 viewModel.onToggleFavorite(
@@ -154,7 +214,7 @@ fun ListScreen(
                     }
                 }
 
-                if (allPosts.itemSnapshotList.isEmpty() && allPosts.loadState.refresh is LoadState.NotLoading) {
+                if (filteredPosts.itemSnapshotList.isEmpty() && filteredPosts.loadState.refresh is LoadState.NotLoading) {
                     item {
                         Column(
                             modifier = Modifier.fillParentMaxSize(),
@@ -167,7 +227,7 @@ fun ListScreen(
                                 contentDescription = null,
                             )
                             TextButton(
-                                onClick = { allPosts.retry() },
+                                onClick = { filteredPosts.retry() },
                                 border = BorderStroke(1.dp, MaterialTheme.colors.primary)
                             ) {
                                 Text(
@@ -179,9 +239,7 @@ fun ListScreen(
                         }
                     }
                 }
-
             }
         }
     }
-
 }
