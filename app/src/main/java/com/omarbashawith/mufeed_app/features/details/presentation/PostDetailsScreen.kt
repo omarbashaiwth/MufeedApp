@@ -1,5 +1,6 @@
 package com.omarbashawith.mufeed_app.features.details.presentation
 
+import android.net.Uri
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
@@ -11,9 +12,8 @@ import androidx.compose.material.icons.filled.Share
 import androidx.compose.material.icons.filled.Star
 import androidx.compose.material.icons.filled.StarBorder
 import androidx.compose.material.icons.outlined.StarBorder
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
+import androidx.compose.runtime.*
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -29,7 +29,9 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import coil.annotation.ExperimentalCoilApi
+import coil.compose.AsyncImage
 import coil.compose.rememberImagePainter
+import coil.request.ImageRequest
 import com.omarbashawith.mufeed_app.R
 import com.omarbashawith.mufeed_app.core.data.model.Post
 import com.omarbashawith.mufeed_app.core.presentation.ui.theme.BistreBrown
@@ -46,6 +48,19 @@ fun PostDetailsScreen(
     viewModel: PostDetailsViewModel = hiltViewModel(),
     hideBottomNav: Boolean = true,
 ) {
+    var downloadedImage by rememberSaveable { mutableStateOf<Uri?>(null) }
+
+    LaunchedEffect(key1 = Unit){
+        if (downloadedImage == null) {
+            viewModel.fetchImageFromFirebase(
+                imageUri = post.imageUrl,
+                onImageDownloadSucceed = {
+                    downloadedImage = it
+                }
+            )
+        }
+
+    }
 
     val context = LocalContext.current
     val uriHandler = LocalUriHandler.current
@@ -81,10 +96,12 @@ fun PostDetailsScreen(
         Box(
             modifier = Modifier.fillMaxWidth()
         ) {
-            Image(
-                painter = rememberImagePainter(data = post.imageUrl) {
-                    error(R.drawable.ic_placeholder)
-                },
+            AsyncImage(
+                model = ImageRequest.Builder(context)
+                    .data(downloadedImage)
+                    .error(R.drawable.ic_placeholder)
+                    .crossfade(true)
+                    .build(),
                 contentDescription = null,
                 contentScale = ContentScale.Crop,
                 modifier = Modifier

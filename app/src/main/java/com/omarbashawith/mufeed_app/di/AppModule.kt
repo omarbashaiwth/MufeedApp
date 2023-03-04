@@ -40,7 +40,8 @@ object AppModule {
     fun provideRetrofit(): Retrofit {
         return Retrofit.Builder()
             .addConverterFactory(GsonConverterFactory.create())
-            .baseUrl("http://192.168.0.125:8080/")
+//            .baseUrl("http://145.14.158.11/") // remote host
+            .baseUrl("http://192.168.0.125:8080") // local host
             .build()
     }
 

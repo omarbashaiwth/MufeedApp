@@ -62,7 +62,8 @@ fun FavoritesScreen(
                             id = it.id,
                             favorite = it.isFavorite
                         )
-                    }
+                    },
+                    viewModel = null
                 )
             }
         }

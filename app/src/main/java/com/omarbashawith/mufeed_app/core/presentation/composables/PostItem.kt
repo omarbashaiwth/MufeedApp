@@ -1,5 +1,6 @@
 package com.omarbashawith.mufeed_app.core.presentation.composables
 
+import android.net.Uri
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
@@ -9,31 +10,50 @@ import androidx.compose.material.icons.filled.Star
 import androidx.compose.material.icons.outlined.Schedule
 import androidx.compose.material.icons.outlined.StarBorder
 import androidx.compose.runtime.*
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import coil.annotation.ExperimentalCoilApi
+import coil.compose.AsyncImage
 import coil.compose.rememberImagePainter
+import coil.request.ImageRequest
 import com.omarbashawith.mufeed_app.R
 import com.omarbashawith.mufeed_app.core.data.model.Post
 import com.omarbashawith.mufeed_app.core.presentation.ui.theme.*
 import com.omarbashawith.mufeed_app.core.util.timeAgo
+import com.omarbashawith.mufeed_app.features.list.presentation.ListScreenViewModel
 
 @OptIn(ExperimentalCoilApi::class)
 @Composable
 fun PostItem(
     modifier: Modifier = Modifier,
+    viewModel: ListScreenViewModel?,
     post: Post,
     showTags: Boolean = true,
     onFavoriteClick: () -> Unit
 ) {
+    val context = LocalContext.current
+    var downloadedImage by rememberSaveable { mutableStateOf<Uri?>(null)}
 
+    LaunchedEffect(key1 = Unit){
+        if (downloadedImage == null) {
+            viewModel?.fetchImageFromFirebase(
+                imageUri = post.imageUrl,
+                onImageDownloadSucceed = {
+                    downloadedImage = it
+                }
+
+            )
+        }
+    }
     Card(
         modifier = modifier,
         backgroundColor = MaterialTheme.colors.surface,
@@ -43,14 +63,16 @@ fun PostItem(
             modifier = Modifier.padding(bottom = 12.dp),
             horizontalAlignment = Alignment.End,
         ) {
-            Image(
-                painter = rememberImagePainter(data = post.imageUrl){
-                    error(R.drawable.ic_placeholder)
-                },
-                contentDescription = null,
+            AsyncImage(
                 modifier = Modifier
                     .fillMaxWidth()
                     .size(123.dp),
+                model = ImageRequest.Builder(context)
+                    .data(downloadedImage)
+                    .error(R.drawable.ic_placeholder)
+                    .crossfade(true)
+                    .build(),
+                contentDescription = null,
                 contentScale = ContentScale.Crop
             )
             Row(

@@ -1,6 +1,7 @@
 package com.omarbashawith.mufeed_app.features.list.presentation
 
 import android.annotation.SuppressLint
+import android.net.Uri
 import android.util.Log
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
@@ -209,7 +210,8 @@ fun ListScreen(
                                     id = it.id,
                                     favorite = it.isFavorite
                                 )
-                            }
+                            },
+                            viewModel = viewModel
                         )
                     }
                 }

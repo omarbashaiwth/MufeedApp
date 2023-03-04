@@ -3,17 +3,22 @@ package com.omarbashawith.mufeed_app.features.list.presentation
 import android.content.Context
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
+import android.net.Uri
 import android.os.Build
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
+import com.google.firebase.ktx.Firebase
+import com.google.firebase.ktx.app
+import com.google.firebase.storage.FirebaseStorage
 import com.omarbashawith.mufeed_app.core.data.model.Post
 import com.omarbashawith.mufeed_app.core.presentation.composables.SearchBarState
 import com.omarbashawith.mufeed_app.features.list.domain.FilterPostsUseCase
 import com.omarbashawith.mufeed_app.features.list.domain.PostRepo
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.flatMapLatest
@@ -98,6 +103,21 @@ class ListScreenViewModel @Inject constructor(
             }
         }
 
+    }
+
+    fun fetchImageFromFirebase(
+        imageUri: String,
+        onImageDownloadSucceed: (Uri) -> Unit
+    ) = viewModelScope.launch(Dispatchers.IO){
+        Log.d("FirebaseStorage","Uri: $imageUri")
+        FirebaseStorage.getInstance().reference.child(imageUri).downloadUrl
+            .addOnSuccessListener {
+                onImageDownloadSucceed(it)
+                Log.d("FirebaseStorage",it.toString())
+            }
+            .addOnFailureListener {
+                Log.d("FirebaseStorage",it.localizedMessage ?: "Error")
+            }
     }
 }
 

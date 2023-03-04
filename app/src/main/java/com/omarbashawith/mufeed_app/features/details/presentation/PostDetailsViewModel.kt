@@ -2,6 +2,7 @@ package com.omarbashawith.mufeed_app.features.details.presentation
 
 import android.content.Context
 import android.content.Intent
+import android.net.Uri
 import android.util.Log
 import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.platform.UriHandler
@@ -10,9 +11,11 @@ import androidx.core.content.ContextCompat
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.google.firebase.storage.FirebaseStorage
 import com.omarbashawith.mufeed_app.core.data.model.Post
 import com.omarbashawith.mufeed_app.features.list.domain.PostRepo
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -67,5 +70,20 @@ class PostDetailsViewModel @Inject constructor(
     fun onToggleFavorite(id: String) = viewModelScope.launch {
         isFavorite.value = !initialFavoriteState
         postRepo.updateFavoritePost(id, isFavorite.value)
+    }
+
+    fun fetchImageFromFirebase(
+        imageUri: String,
+        onImageDownloadSucceed: (Uri) -> Unit
+    ) = viewModelScope.launch(Dispatchers.IO){
+        Log.d("FirebaseStorage","Uri: $imageUri")
+        FirebaseStorage.getInstance().reference.child(imageUri).downloadUrl
+            .addOnSuccessListener {
+                onImageDownloadSucceed(it)
+                Log.d("FirebaseStorage",it.toString())
+            }
+            .addOnFailureListener {
+                Log.d("FirebaseStorage",it.localizedMessage ?: "Error")
+            }
     }
 }
